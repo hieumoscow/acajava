@@ -1,6 +1,7 @@
 # Local .terraform directories
 **/.terraform/*
 azure-spring-apps.tf
+deploy-script.sh
 
 # .tfstate files
 *.tfstate

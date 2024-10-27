@@ -55,5 +55,4 @@ variable "max_replicas" {
 variable "target_port" {
   description = "The port on which the application listens"
   type        = number
-  default     = 8080
 }

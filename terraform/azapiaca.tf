@@ -31,6 +31,37 @@ resource "azapi_resource" "SampleAdmin" {
   })
 }
 
+resource "azapi_resource" "SpringCloudConfig" {
+  type      = "Microsoft.App/managedEnvironments/javaComponents@2024-02-02-preview"
+  name      = "configserverhieu"
+  parent_id = azurerm_container_app_environment.env.id
+  body = jsonencode({
+    properties = {
+      componentType = "SpringCloudConfig"
+      # serviceBinds = [
+      #   {
+      #     name      = azurerm_container_app.app.name
+      #     serviceId = azurerm_container_app.app.id
+      #   },
+      # ]
+      configurations = [
+        {
+          propertyName = "spring.cloud.config.server.git.uri"
+          value        = "https://github.com/hieumoscow/acajv.git"
+        },
+        {
+          propertyName = "spring.cloud.config.server.git.username"
+          value        = "test"
+        },
+        {
+          propertyName = "spring.cloud.config.server.git.password"
+          value        = "test"
+        },
+      ]
+    }
+  })
+}
+
 resource "azapi_resource" "my-eureka-client" {
   type      = "Microsoft.App/containerApps@2024-03-01"
   name      = "my-eureka-client"
@@ -78,6 +109,10 @@ resource "azapi_resource" "my-eureka-client" {
           {
             name      = azapi_resource.SampleAdmin.name
             serviceId = azapi_resource.SampleAdmin.id
+          },
+          {
+            name      = azapi_resource.SpringCloudConfig.name
+            serviceId = azapi_resource.SpringCloudConfig.id
           },
         ]
       }
@@ -137,6 +172,10 @@ resource "azapi_resource" "sample-service-eureka-client" {
           {
             name      = azapi_resource.SampleAdmin.name
             serviceId = azapi_resource.SampleAdmin.id
+          },
+          {
+            name      = azapi_resource.SpringCloudConfig.name
+            serviceId = azapi_resource.SpringCloudConfig.id
           },
         ]
       }

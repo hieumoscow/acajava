@@ -51,8 +51,44 @@ variable "max_replicas" {
   default     = 10
 }
 
-
-variable "target_port" {
-  description = "The port on which the application listens"
-  type        = number
+variable "eureka_server_configurations" {
+  description = "Configuration settings for Eureka server"
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  default = [
+    {
+      name  = "eureka.server.renewal-percent-threshold"
+      value = "0.85"
+    },
+    {
+      name  = "eureka.server.eviction-interval-timer-in-ms"
+      value = "10000"
+    }
+  ]
 }
+
+variable "spring_config_configurations" {
+  description = "Configuration settings for Spring Cloud Config server"
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  sensitive = true
+  default = [
+    {
+      name  = "spring.cloud.config.server.git.uri"
+      value = "https://github.com/YOUR/REPO.git"
+    },
+    {
+      name  = "spring.cloud.config.server.git.username"
+      value = "test"
+    },
+    {
+      name  = "spring.cloud.config.server.git.password"
+      value = "test"
+    }
+  ]
+}
+
